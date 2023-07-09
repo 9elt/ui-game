@@ -46,7 +46,11 @@ export default class Physics {
 
         if (player.speed.x) {
 
-          if (player.speed.x < 0) {
+          if (player.isColliding_B()) {
+
+            player.speed.x = 0;
+
+          } else if (player.speed.x < 0) {
 
             if (!player.isColliding_L()) {
               player.setX(x => x + player.accelX(+1));
@@ -75,6 +79,7 @@ export default class Physics {
         if (player.isColliding_T()) {
           player.jumping = 0;
           player.speed.y = 0;
+          player.animationRemove("jump")
         }
 
       } else if (!player.isColliding_B()) {
@@ -84,6 +89,7 @@ export default class Physics {
 
       } else {
         player.speed.y = 0;
+        player.animationRemove("jump")
       }
 
 

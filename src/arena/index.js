@@ -34,6 +34,13 @@ export default class Arena {
     arena.#lastX = arena.width - 1;
     arena.#lastY = arena.height - 1;
 
+    arena.#bg = parseInt(
+      getComputedStyle(document.body)?.background?.split("(")[1]?.split(",")?.[0]
+    ) || 255;
+
+    arena.#bgMax = arena.#bg + BG_TOL;
+    arena.#bgMin = arena.#bg - BG_TOL;
+
     const bytes = (await html2canvas(document.documentElement))
       .getContext("2d")
       .getImageData(0, 0, arena.width, arena.height, { colorSpace: "srgb" });
@@ -48,14 +55,9 @@ export default class Arena {
         : grid.push([bytes.data[i]]);
     }
 
+    grid[grid.length - 1].fill(9999);
+
     arena.grid = grid;
-
-    arena.#bg = parseInt(
-      getComputedStyle(document.body)?.background?.split("(")[1]?.split(",")?.[0]
-    ) || 255;
-
-    arena.#bgMax = arena.#bg + BG_TOL;
-    arena.#bgMin = arena.#bg - BG_TOL;
 
     return arena;
   }

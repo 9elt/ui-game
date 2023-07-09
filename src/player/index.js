@@ -1,4 +1,8 @@
-/** @typedef {import('../arena').default} Arena */
+/** 
+ * @typedef {import('../arena').default} Arena 
+ * @typedef {"still" | "mov-l" | "mov-r" | "jump"} Animation 
+ */
+
 
 import { PLAYER_MODEL } from "../models/player";
 
@@ -57,7 +61,7 @@ export default class Player {
     player.doubleJumpEnable = false;
 
     player.#HTMLelement = document.createElement("div");
-    player.#HTMLelement.className = "uigame-player";
+    player.#HTMLelement.className = "uigame-player still";
     player.#HTMLelement.innerHTML = PLAYER_MODEL;
     document.body.append(player.#HTMLelement);
 
@@ -122,12 +126,26 @@ export default class Player {
 
   /** @param {boolean} v */
   moveL(v) {
-    this.moving.l = v; 
+    this.moving.l = v
+    if (v) {
+      this.animationRemove("mov-r", "still");
+      this.animationAdd("mov-l");
+    } else {
+      this.animationRemove("mov-l");
+      this.animationAdd("still");
+    }
   }
 
   /** @param {boolean} v */
   moveR(v) {
-    this.moving.r = v; 
+    this.moving.r = v;
+    if (v) {
+      this.animationRemove("mov-l", "still");
+      this.animationAdd("mov-r");
+    } else {
+      this.animationRemove("mov-r");
+      this.animationAdd("still");
+    }
   }
 
   jump() {
@@ -135,10 +153,12 @@ export default class Player {
       this.jumping = JUMP_H;
       this.doubleJumpEnable = true;
       this.speed.y = -MAX_JUMP_SPEED;
+      this.animationAdd("jump");
     } else if (this.doubleJumpEnable) {
       this.jumping = JUMP_H;
       this.doubleJumpEnable = false;
       this.speed.y = -MAX_JUMP_SPEED;
+      this.animationAdd("jump");
     }
   }
 
@@ -146,7 +166,25 @@ export default class Player {
     if (this.jumping) {
       this.jumping = 0;
       this.speed.y = 0;
+      this.animationRemove("jump");
     }
+  }
+
+  // animation
+
+  /** @param {Animation[]} ani */
+  animationAdd(...ani) {
+    ani.forEach(ani => this.#HTMLelement.classList.add(ani));
+  }
+
+  /** @param {Animation[]} ani */
+  animationRemove(...ani) {
+    ani.forEach(ani => this.#HTMLelement.classList.remove(ani));
+  }
+
+  /** @param {Animation[]} ani */
+  setAnimation(...ani) {
+    this.#HTMLelement.className = "uigame-player " + ani.join(" ");
   }
 
   // collisions
