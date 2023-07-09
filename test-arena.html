@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UI Game | test arena</title>
+  <style>
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      background-color: #111;
+      color: #fff;
+      font-family: monospace;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    p {
+      font-weight: bold;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <div>
+    <p><span>th</span><span>is</span><span> is a test</span></p>
+    <p style="margin-left: 10rem;"><span>th</span><span>is</span><span> is a test</span></p>
+    <p style="margin-top: 10rem; margin-left: 25rem;"><span>th</span><span>is</span><span> is a test</span></p>
+    <p style="margin-top: 5rem; margin-left: 20rem"><span>th</span><span>is</span><span> is a test</span></p>
+  </div>
+
+  <script>
+    document.querySelectorAll("span").forEach((s, i) => 
+      s.addEventListener("click", () => console.log("CLICKED " + i))
+    )
+  </script>
+
+  <script src="extension/scripts/index.js"></script>
+</body>
+</html>
